@@ -50,11 +50,11 @@ abstract class AppBase{
   //--------setDisplayErrorsメソッド--------------
   //エラー表示の無効／有効を設定
   //フラグがtrueの場合はすべてエラーを出力する
-  protected function setDisplayErrors($dispErr){
-    if($dispErr){
+  protected function setDisplayErrors($dspErr){
+    if($dspErr){
       //エラー表示
       $this->_displayErrors = true;
-      ini_set("displayerrors", 1);
+      ini_set("display_errors", 1);
       ini_set("error_reporting", E_ALL);
     }else{
       //エラー表示しない
@@ -178,6 +178,59 @@ abstract class AppBase{
     ";
     //コンテンツ登録
     $this->_response->setContent($html);
+  }
+
+  //--------getRootDefinitionメソッド--------------
+  //アプリケーションのルートディレクトリ取得
+  //オーバーライド前提の抽象メソッド
+  abstract public function getRootDefinition();
+
+
+  //--------doDbConnectionメソッド--------------
+  //データベース接続
+  //実装はアプリケーション側
+  protected function doDbConnection(){}
+
+  //各インスタンスを取得するメソッド
+  //--------getRequestObjectメソッド--------------
+  public function getRequestObject(){
+    return $this->_request;
+  }
+  //--------getResponseObjectメソッド--------------
+  public function getResponseObject(){
+    return $this->_response;
+  }
+  //--------getSessionObjectメソッド--------------
+  public function getSessionObject(){
+    return $this->_session;
+  }
+  //--------getConnectModelObjectメソッド--------------
+  public function getConnectModelObject(){
+    return $this->_connect_model;
+  }
+
+  //--------getRootDirectoryメソッド--------------
+  //プロジェクトのルートディレクトリを返す
+  //抽象メソッド
+  abstract public function getRootDirectory();
+
+  //それぞれのディレクトリのパスを返すメソッド
+  //--------getViewDirectoryメソッド--------------
+  public function getViewDirectory(){
+    return $this->getRootDirectory() . self::VIEWSDIR;
+  }
+
+  public function getModelDirectory(){
+    return $this->getRootDirectory() . self::MODELDIR;
+  }
+
+  //ドキュメントルート
+  public function getDocDirectory(){
+    return $this->getRootDirectory() . self::WEBDIR;
+  }
+
+  public function getControllerDirectory(){
+    return $this->getRootDirectory() . self::CONTROLLERSDIR;
   }
 
 }
